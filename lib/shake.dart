@@ -53,7 +53,7 @@ class ShakeDetector {
 
   /// Starts listening to accelerometer events
   void startListening() {
-    streamSubscription = accelerometerEvents.listen(
+    streamSubscription = accelerometerEventStream().listen(
       (AccelerometerEvent event) {
         double x = event.x;
         double y = event.y;
@@ -68,12 +68,12 @@ class ShakeDetector {
 
         if (gForce > shakeThresholdGravity) {
           var now = DateTime.now().millisecondsSinceEpoch;
-          // ignore shake events too close to each other (500ms)
+          // Ignore shake events too close to each other (500ms)
           if (mShakeTimestamp + shakeSlopTimeMS > now) {
             return;
           }
 
-          // reset the shake count after 3 seconds of no shakes
+          // Reset the shake count after 3 seconds of no shakes
           if (mShakeTimestamp + shakeCountResetTime < now) {
             mShakeCount = 0;
           }
